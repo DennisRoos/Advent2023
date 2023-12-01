@@ -90,7 +90,6 @@ int main(int argc, char* argv[])
 			number = (10 * digit1) + digit2;
 			answer2 += number;
 		}
-		//present final answer
 		cout << "Final answer to part 1 is " << answer1 << "\n";
 		cout << "Final answer to part 2 is " << answer2 << "\n";
 	}

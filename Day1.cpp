@@ -1,9 +1,6 @@
 #include <iostream>
-#include <fstream>
-#include <iostream>
 #include <iomanip>
 #include <fstream>
-
 using namespace std;
 
 int parse1(string s, int n) {
@@ -18,43 +15,31 @@ int parse1(string s, int n) {
 int parse2(string s, int n) {
 	int size = s.size();
 	if (n < size - 2) {
-		if (s[n] == 'o' && s[n + 1] == 'n' && s[n + 2] == 'e') {
+		string s3 = s.substr(n, 3);
+		if (s3.compare("one") == 0)
 			return 1;
-		}
-		if (s[n] == 't' && s[n + 1] == 'w' && s[n + 2] == 'o') {
+		if (s3.compare("two") == 0)
 			return 2;
-		}
-		if (s[n] == 's' && s[n + 1] == 'i' && s[n + 2] == 'x') {
+		if (s3.compare("six") == 0)
 			return 6;
-		}
 		if (n < size - 3) {
-			if (s[n] == 'f' && s[n + 1] == 'o' && s[n + 2] == 'u' && s[n + 3] == 'r') {
+			string s4 = s.substr(n, 4);
+			if (s4.compare("four") == 0)
 				return 4;
-			}
-			if (s[n] == 'f' && s[n + 1] == 'i' && s[n + 2] == 'v' && s[n + 3] == 'e') {
+			if (s4.compare("five") == 0)
 				return 5;
-			}
-			if (s[n] == 'n' && s[n + 1] == 'i' && s[n + 2] == 'n' && s[n + 3] == 'e') {
+			if (s4.compare("nine") == 0)
 				return 9;
-			}
-			if (s[n] == 'z' && s[n + 1] == 'e' && s[n + 2] == 'r' && s[n + 3] == 'o') {
-				return 0;
-			}
 			if (n < size - 4) {
-				if (s[n] == 't' && s[n + 1] == 'h' && s[n + 2] == 'r' && s[n + 3] == 'e' && s[n + 4] == 'e') {
+				string s5 = s.substr(n, 5);
+				if (s5.compare("three") == 0)
 					return 3;
-				}
-				if (s[n] == 's' && s[n + 1] == 'e' && s[n + 2] == 'v' && s[n + 3] == 'e' && s[n + 4] == 'n') {
+				if (s5.compare("seven") == 0)
 					return 7;
-				}
-				if (s[n] == 'e' && s[n + 1] == 'i' && s[n + 2] == 'g' && s[n + 3] == 'h' && s[n + 4] == 't') {
+				if (s5.compare("eight") == 0)
 					return 8;
-				}
-
 			}
-
 		}
-
 	}
 	return -1;
 }
@@ -63,7 +48,6 @@ int main(int argc, char* argv[])
 {
 	ifstream infile;
 	infile.open("data.txt");
-
 	if (infile.is_open())
 	{
 		string s;
@@ -104,19 +88,13 @@ int main(int argc, char* argv[])
 				i--;
 			}
 			number = (10 * digit1) + digit2;
-			cout << number << endl;
 			answer2 += number;
-
 		}
 		//present final answer
 		cout << "Final answer to part 1 is " << answer1 << "\n";
 		cout << "Final answer to part 2 is " << answer2 << "\n";
 	}
 	else {
-
 		cout << "can't find file?\n";
 	}
-
-
-
 }

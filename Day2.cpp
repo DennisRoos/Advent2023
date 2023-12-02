@@ -9,13 +9,10 @@ using namespace std;
 
 int pos;
 
-
-
 int main(int argc, char* argv[]) {
 
 	int total1 = 0;
 	int total2 = 0;
-	string s;
 	int num; 
 	string color;
 	ifstream f("data.txt");
@@ -24,10 +21,10 @@ int main(int argc, char* argv[]) {
 		int minred = 0;
 		int mingreen = 0;
 		int minblue = 0;
-		f >> s;
-		f >> s; //skip past preamble
+		f >> color;
+		f >> color; // skip past preamble
 		bool b = true;
-		while (b) {
+		do {
 			f >> num;
 			f >> color;
 			if (color[0] == 'r') {
@@ -44,11 +41,9 @@ int main(int argc, char* argv[]) {
 				if (num > 14)
 					possible = false;
 				minblue = max(minblue, num);
-			}
+			}			
+		} while (color.back() == ',' || color.back() == ';'); // still more draws to process
 
-			if (color.back() != ',' && color.back() != ';') //reached the end of the game
-				b = false;
-		}
 		if (possible)
 			total1 += game;
 		total2 += minred * mingreen * minblue;

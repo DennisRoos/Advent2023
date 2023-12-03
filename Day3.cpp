@@ -99,6 +99,8 @@ int main(int argc, char* argv[]) {
 						}
 						numberlist.push_back(N);
 					}
+					else 
+						delete N; //don't want a memory leak ;)
 				}
 				x += l;
 			}

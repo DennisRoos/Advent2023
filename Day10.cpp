@@ -14,6 +14,15 @@ char Map[140][140];
 int A[140][140];
 int xlength;
 int ylength;
+vector<int> X;
+vector<int> Y;
+
+void append(int x, int y) {
+	if (x >= 0 && y >= 0 && x < 140 && y < 140 && A[x][y] == 0) {
+		X.push_back(x);
+		Y.push_back(y);
+	}
+}
 
 int navigate(int x, int y, int direction) {
 	int depth = 0;
@@ -33,61 +42,6 @@ int navigate(int x, int y, int direction) {
 		if (c == 'S')
 			return depth;
 
-		if (direction == 0) { //east
-			if (c == 'J')
-				direction = 3;
-			else if (c == '7')
-				direction = 1;
-		}
-		else if (direction == 1) { //south
-			if (c == 'J')
-				direction = 2;
-			else if (c == 'L')
-				direction = 0;
-		}
-		else if (direction == 2) { //west
-			if (c == 'L')
-				direction = 3;
-			else if (c == 'F')
-				direction = 1;
-		}
-		else { //north
-			if (c == 'F')
-				direction = 0;
-			else if (c == '7')
-				direction = 2;
-		}
-	}
-}
-
-vector<int> X;
-vector<int> Y;
-
-void append(int x, int y) {
-	if (x >= 0 && y >= 0 && x < 140 && y < 140 && A[x][y] == 0) {
-		X.push_back(x);
-		Y.push_back(y);
-	}
-}
-
-
-void markInside(int x, int y, int direction) {
-	while (true) {
-		if (direction == 0) {  //east
-			x++;
-		}
-		else if (direction == 1) { //south
-			y++;
-		}
-		else if (direction == 2) { //west
-			x--;
-		}
-		else { //north
-			y--;
-		}
-		char c = Map[x][y];
-		if (c == 'S')
-			return;
 
 		if (direction == 0) { //east
 			if (c == 'J') {
@@ -95,7 +49,7 @@ void markInside(int x, int y, int direction) {
 				append(x, y + 1);
 				append(x + 1, y);
 			}
-			else if (c == '7'){
+			else if (c == '7') {
 				direction = 1;
 			}
 			else {
@@ -178,7 +132,6 @@ int main(int argc, char* argv[]) {
 	}
 	int looplength = navigate(Sx, Sy,1);
 	cout << "The answer to part 1 is " << looplength / 2 << endl;
-	markInside(Sx, Sy, 1);
 	InsideTiles = 0;
 	for (int i = 0; i < X.size(); i++) {
 		paintInside(X[i], Y[i]);

@@ -82,14 +82,6 @@ void processMessage(module* sender, module* r, bool pulse) {
 			b = b && r->inputstates[i];
 		}
 		
-		if (b) {
-			for (int i = 0; i < conjunctors.size(); i++) {
-				if (conjunctors[i] == r) {
-					periods.push_back(buttonpresses);
-					cout << "Found a cycle for conjunctor " << conjunctors[i]->name << " at " << buttonpresses << endl;
-				}
-			}
-		}
 		r->state = !b; //if all high pulses, broadcast a low pulse
 	}
 	sendmessages(r, r->state);
@@ -137,21 +129,15 @@ long long findPeriod(module* m) {
 	else
 		con = m->dest[1];
 	long long num = 0; 
+	long long step = 1;
 	while (m != NULL) {
-		num *= 2;
 		module* next = getNext(m, con);
 		if (isOutput(m, con))
-			num++;
+			num += step;
+		step *= 2;
 		m = getNext(m, con);
 	}
 	return num;
-}
-
-module* findCon(module* m) {
-	if (m->dest[0]->type == CONJUNCTION)
-		return m->dest[0];
-	else
-		return m->dest[1];
 }
 
 long long gcd(long long a, long long b) {
@@ -198,7 +184,6 @@ int main(int argc, char* argv[]) {
 					if (modules[i]->dest[j] == modules[k]) {
 						modules[k]->inputs.push_back(modules[i]);
 						modules[k]->inputstates.push_back(false);
-						cout << modules[i]->name << ", " << modules[k]->name << endl;
 					}
 				}
 			}
@@ -211,36 +196,27 @@ int main(int argc, char* argv[]) {
 	initial.pulse = false;
 	initial.receiver = broadcaster;
 
-	int numberOfCycles = broadcaster->dest.size();
-	for (int i = 0; i < numberOfCycles; i++) {
-		conjunctors.push_back(findCon(broadcaster->dest[i]));
-		cout << conjunctors[i]->name << endl;
-	}
-	buttonpresses = 1;
-	while (periods.size() < numberOfCycles){
 
+	for(buttonpresses = 1; buttonpresses <= 1000; buttonpresses++){
 		messagelist.push_back(initial);
 		for (int j = 0; j < messagelist.size(); j++) {
 			message m = messagelist[j];
 			processMessage(m.sender, m.receiver, m.pulse);
 		}
 		messagelist.clear();
-		if (buttonpresses == 1000) {
-			total1 = lowpulses * highpulses;
-			cout << "The answer to part 1 is " << total1 << endl;
-		}
-		buttonpresses++;
 	}
+	total1 = lowpulses * highpulses;
+	cout << "The answer to part 1 is " << total1 << endl;
 
-
-
+	int numberOfCycles = broadcaster->dest.size();
+	for (int i = 0; i < numberOfCycles; i++) {
+		periods.push_back(findPeriod(broadcaster->dest[i]));
+	}
 	long long total2 = periods[0];
-	for (int i = 1; i < periods.size(); i++)
+	for (int i = 1; i < numberOfCycles; i++)
 		total2 = (periods[i] * total2) / (gcd(periods[i], total2));
 
 
 	cout << "The answer to part 2 is " << total2 << endl;
 	return 0;
 }
-
-// 709255536979 too low
